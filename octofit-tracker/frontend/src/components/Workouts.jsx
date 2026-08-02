@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
 import { Card, ListGroup } from 'react-bootstrap';
-import { buildApiUrl } from '../utils/api';
 
 function Workouts() {
   const [workouts, setWorkouts] = useState([]);
@@ -9,7 +8,10 @@ function Workouts() {
   useEffect(() => {
     const loadWorkouts = async () => {
       try {
-        const response = await fetch(buildApiUrl('workouts'));
+        const baseUrl = import.meta.env.VITE_CODESPACE_NAME
+          ? `https://${import.meta.env.VITE_CODESPACE_NAME}-8000.app.github.dev/api/workouts/`
+          : 'http://localhost:8000/api/workouts/';
+        const response = await fetch(baseUrl);
         const data = await response.json();
         const items = Array.isArray(data) ? data : data.results ?? [];
         setWorkouts(items);

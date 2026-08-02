@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
 import { Card, ListGroup } from 'react-bootstrap';
-import { buildApiUrl } from '../utils/api';
 
 function Leaderboard() {
   const [entries, setEntries] = useState([]);
@@ -9,7 +8,10 @@ function Leaderboard() {
   useEffect(() => {
     const loadLeaderboard = async () => {
       try {
-        const response = await fetch(buildApiUrl('leaderboard'));
+        const baseUrl = import.meta.env.VITE_CODESPACE_NAME
+          ? `https://${import.meta.env.VITE_CODESPACE_NAME}-8000.app.github.dev/api/leaderboard/`
+          : 'http://localhost:8000/api/leaderboard/';
+        const response = await fetch(baseUrl);
         const data = await response.json();
         const items = Array.isArray(data) ? data : data.results ?? [];
         setEntries(items);

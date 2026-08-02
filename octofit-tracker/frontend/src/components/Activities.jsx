@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
 import { Card, ListGroup } from 'react-bootstrap';
-import { buildApiUrl } from '../utils/api';
 
 function Activities() {
   const [activities, setActivities] = useState([]);
@@ -9,7 +8,10 @@ function Activities() {
   useEffect(() => {
     const loadActivities = async () => {
       try {
-        const response = await fetch(buildApiUrl('activities'));
+        const baseUrl = import.meta.env.VITE_CODESPACE_NAME
+          ? `https://${import.meta.env.VITE_CODESPACE_NAME}-8000.app.github.dev/api/activities/`
+          : 'http://localhost:8000/api/activities/';
+        const response = await fetch(baseUrl);
         const data = await response.json();
         const items = Array.isArray(data) ? data : data.results ?? [];
         setActivities(items);
