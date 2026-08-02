@@ -5,6 +5,7 @@ import { User } from '../models/user.js';
 
 const connectionString = process.env.MONGODB_URI || 'mongodb://localhost:27017/octofit_db';
 
+// Seed the octofit_db database with test data for users, activities, and teams.
 async function seedDatabase() {
   try {
     await mongoose.connect(connectionString);
